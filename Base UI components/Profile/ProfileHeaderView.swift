@@ -1,10 +1,3 @@
-//
-//  ProfileHeaderView.swift
-//  Base UI components
-//
-//  Created by Таисия Кутявина on 30.09.2022.
-//
-
 import UIKit
 
 class ProfileHeaderView: UIView {
@@ -43,6 +36,7 @@ class ProfileHeaderView: UIView {
         button.layer.shadowRadius = 4
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOpacity = 0.7
+        button.addTarget(Any?.self, action: #selector(buttonStatusAction), for: .touchUpInside)
         return button
     }()
     
@@ -54,37 +48,48 @@ class ProfileHeaderView: UIView {
         return status
     }()
     
-    func setupLabelName() {
-        labelName.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            labelName.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 160),
-            labelName.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 27)
-        ])
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.addSubview(mainView)
+        mainView.addSubview(avatarView)
+        mainView.addSubview(labelName)
+        mainView.addSubview(buttonStatus)
+        setupView()
     }
     
-    func setupButtonStatus() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupView() {
+        mainView.translatesAutoresizingMaskIntoConstraints = false
+        labelName.translatesAutoresizingMaskIntoConstraints = false
         buttonStatus.translatesAutoresizingMaskIntoConstraints = false
+        labelStatus.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            mainView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            mainView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            mainView.widthAnchor.constraint(equalTo: self.widthAnchor),
+            mainView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            
+            labelName.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 160),
+            labelName.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 27),
+            
             buttonStatus.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
             buttonStatus.widthAnchor.constraint(equalTo: mainView.widthAnchor, constant: -32),
+            buttonStatus.heightAnchor.constraint(equalToConstant: 50),
             buttonStatus.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 152)
         ])
     }
     
-    func setupLabelStatus() {
+    @objc func buttonStatusAction() {
+        mainView.addSubview(labelStatus)
         labelStatus.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             labelStatus.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 160),
             labelStatus.bottomAnchor.constraint(equalTo: buttonStatus.topAnchor, constant: -34)
         ])
-    }
-    
-    func setupMainView() {
-        mainView.addSubview(avatarView)
-        mainView.addSubview(labelName)
-        setupLabelName()
-        mainView.addSubview(buttonStatus)
-        setupButtonStatus()
+        print(labelStatus.text!)
     }
     
 }
